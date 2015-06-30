@@ -718,26 +718,24 @@ accept'' r s | No  x | No y  | ext f g = No (λ p → y (f p))
 ----------------------------------------------------
 -- Examples
 ----------------------------------------------------
-{-
 example : Regex
 example = a ∣ (b · (b · b))
 
-example : (a' :: (b' :: (b' :: []))) ∈  (ch a' ∣ ((ch a' · ch b') · (ch  a' ∣ ch b' )))
-example = ∣-right (concat (concat (ch-def a') (ch-def b') (Step Base)) (∣-right (ch-def b') ) (Step (Step Base)))
+example2 : (a' :: (b' :: (b' :: []))) ∈  (ch a' ∣ ((ch a' · ch b') · (ch  a' ∣ ch b' )))
+example2 = ∣-right (concat (concat (ch-def a') (ch-def b') (Step Base)) (∣-right (ch-def b') ) (Step (Step Base)))
 
-example2 : ('a' :: ('b' :: ('b' :: []))) ∈ (a ∣ ((a · b) · ( a ∣ b )  ))
-example2 = ∣-right (concat (concat a-def b-def) (∣-right b-def))
+example3 : (a' :: (b' :: (b' :: []))) ∈ (a · (b ⋆))
+example3 = concat (ch-def a') (⋆-step (ch-def b') (⋆-step (ch-def b') ⋆-base (Step Base)) (Step Base))   (Step Base)
 
-example3 : "abb" ∈ (a · (b ⋆))
-example3 = concat a-def (⋆-step b-def (⋆-step b-def ⋆-base))
+example4 : (a' :: (b' :: [])) ∈ ((a ∣ b) ⋆)
+example4 = ⋆-step (∣-left (ch-def a')) (⋆-step (∣-right (ch-def b')) ⋆-base (Step Base)) (Step Base)
 
-example4 : "ab" ∈ ((a ∣ b) ⋆)
-example4 = ⋆-step (∣-left a-def) (⋆-step (∣-right b-def) ⋆-base)
--}
-
--- PROBLEMATIC DON'T EVALUATE!!! ex = accept' ((ε ∣ ch a') ⋆) (a' :: [])
+--PROBLEMATIC DOES NOT TERMINATE!
+-- ex1 = accept' ((ε ∣ ch a') ⋆) (a' :: [])
 -- Ok:
---ex = accept' ((ch a' ∣ ε) ⋆) (a' :: [])
+ex2 = accept' ((ch a' ∣ ε) ⋆) (a' :: [])
+-- Also ok:
+ex3 = accept'' ((ε ∣ ch a') ⋆) (a' :: [])
 
 
 
